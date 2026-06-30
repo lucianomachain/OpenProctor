@@ -14,7 +14,7 @@ def home():
     <p id="status">Estado: esperando cámara...</p>
 
     <br>
-    <a href="https://forms.gle/tu-examen" target="_blank">
+    <a href="https://forms.gle/SZwABuVkbCmFzcY57" target="_blank">
         👉 Abrir examen
     </a>
 
