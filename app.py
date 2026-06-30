@@ -57,7 +57,7 @@ def home():
 
     <br><br>
 
-    <a href="https://forms.gle/TU_EXAMEN_REAL" target="_blank">
+    <a href="https://forms.gle/EMFQiW421sgWB2Uf7" target="_blank">
         👉 Abrir examen
     </a>
     """
