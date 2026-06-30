@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -7,25 +7,42 @@ def home():
     return """
     <h2>OpenProctor ✔</h2>
 
-    <p>1. Activá la cámara</p>
+    <p>Activá cámara para supervisión</p>
 
-    <video id="video" autoplay playsinline></video>
+    <video id="video" autoplay playsinline style="width:400px;"></video>
+
+    <p id="status">Estado: esperando cámara...</p>
+
+    <br>
+    <a href="https://forms.gle/tu-examen" target="_blank">
+        👉 Abrir examen
+    </a>
 
     <script>
-    navigator.mediaDevices.getUserMedia({ video: true })
+        const video = document.getElementById("video");
+        const status = document.getElementById("status");
+
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         .then(stream => {
-            document.getElementById('video').srcObject = stream;
+            video.srcObject = stream;
+            status.innerText = "Cámara activa ✔";
         })
         .catch(err => {
-            alert("No se pudo acceder a la cámara");
+            status.innerText = "❌ No se pudo acceder a la cámara";
         });
-    </script>
 
-    <br><br>
-    <a href='https://forms.gle/tu-examen' target='_blank'>
-        Abrir examen
-    </a>
+        // "heartbeat" simple al backend
+        setInterval(() => {
+            fetch("/ping", {method: "POST"});
+        }, 5000);
+    </script>
     """
-    
+
+@app.route("/ping", methods=["POST"])
+def ping():
+    return jsonify({"ok": True})
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    import os
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
