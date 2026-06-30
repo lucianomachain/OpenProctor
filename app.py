@@ -6,15 +6,26 @@ app = Flask(__name__)
 def home():
     return """
     <h2>OpenProctor ✔</h2>
-    <p>Sistema activo</p>
+
+    <p>1. Activá la cámara</p>
+
+    <video id="video" autoplay playsinline></video>
+
+    <script>
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            document.getElementById('video').srcObject = stream;
+        })
+        .catch(err => {
+            alert("No se pudo acceder a la cámara");
+        });
+    </script>
+
+    <br><br>
     <a href='https://forms.gle/tu-examen' target='_blank'>
         Abrir examen
     </a>
     """
-
-@app.route("/status")
-def status():
-    return {"status": "ok"}
-
+    
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
